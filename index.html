@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#2E7D32">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="GreenPoint">
+  <meta name="description" content="GreenPoint - Bank Sampah Berbasis Komunitas">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192x192.png">
+  <title>GreenPoint</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- SPLASH SCREEN -->
+    <div id="splash-screen" class="splash-screen">
+      <div class="splash-content">
+        <div class="splash-icon">♻️</div>
+        <h1>GreenPoint</h1>
+        <p>Bank Sampah Berbasis Komunitas</p>
+        <div class="splash-loader"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: LOGIN -->
+    <div id="page-login" class="page auth-page" style="display:none">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="auth-logo">♻️</div>
+          <h1>GreenPoint</h1>
+          <p>Masuk ke akun Anda</p>
+        </div>
+        <form id="login-form" class="auth-form" onsubmit="return false">
+          <div class="form-group">
+            <label for="login-phone">Nomor HP</label>
+            <input type="tel" id="login-phone" placeholder="08xxxxxxx" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Kata Sandi</label>
+            <input type="password" id="login-password" placeholder="Masukkan kata sandi" required>
+          </div>
+          <div id="login-error" class="form-error" style="display:none"></div>
+          <button type="submit" class="btn btn-primary btn-full" onclick="App.login()">Masuk</button>
+          <p class="auth-link">Belum punya akun? <a href="#" onclick="App.showPage('register')">Daftar</a></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- PAGE: REGISTER -->
+    <div id="page-register" class="page auth-page" style="display:none">
+      <div class="auth-container">
+        <div class="auth-header">
+          <div class="auth-logo">♻️</div>
+          <h1>Daftar Akun</h1>
+          <p>Bergabung dengan GreenPoint</p>
+        </div>
+        <form id="register-form" class="auth-form" onsubmit="return false">
+          <div class="form-group">
+            <label for="reg-name">Nama Lengkap</label>
+            <input type="text" id="reg-name" placeholder="Nama lengkap" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-phone">Nomor HP</label>
+            <input type="tel" id="reg-phone" placeholder="08xxxxxxx" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-address">Alamat</label>
+            <textarea id="reg-address" placeholder="Alamat lengkap" rows="2" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="reg-type">Jenis Akun</label>
+            <select id="reg-type" required>
+              <option value="warga">Warga Umum</option>
+              <option value="usaha">Pelaku Usaha</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="reg-password">Kata Sandi</label>
+            <input type="password" id="reg-password" placeholder="Minimal 6 karakter" minlength="6" required>
+          </div>
+          <div class="form-group">
+            <label for="reg-confirm">Konfirmasi Kata Sandi</label>
+            <input type="password" id="reg-confirm" placeholder="Ulangi kata sandi" required>
+          </div>
+          <div id="register-error" class="form-error" style="display:none"></div>
+          <button type="submit" class="btn btn-primary btn-full" onclick="App.register()">Daftar</button>
+          <p class="auth-link">Sudah punya akun? <a href="#" onclick="App.showPage('login')">Masuk</a></p>
+        </form>
+      </div>
+    </div>
+
+    <!-- PAGE: HOME / DASHBOARD -->
+    <div id="page-home" class="page app-page" style="display:none">
+      <div class="page-header">
+        <div class="header-left">
+          <span class="greeting" id="greeting-text">Halo, User</span>
+          <span class="user-role-badge" id="user-role-badge">Warga</span>
+        </div>
+        <div class="header-right">
+          <button class="btn-icon" onclick="App.showPage('notifikasi')" id="notif-bell">
+            <span>🔔</span>
+            <span class="notif-badge" id="notif-count" style="display:none">0</span>
+          </button>
+          <button class="btn-icon" onclick="App.showPage('profil')">👤</button>
+        </div>
+      </div>
+      <div class="page-content">
+        <div class="points-card">
+          <div class="points-label">Total Poin Anda</div>
+          <div class="points-value" id="home-points">0</div>
+          <div class="points-sub">Terus kumpulkan poin dan tukarkan dengan reward!</div>
+        </div>
+        <div class="quick-actions">
+          <button class="qa-btn" onclick="App.showPage('setor')">
+            <span class="qa-icon">🗑️</span>
+            <span class="qa-label">Setor Sampah</span>
+          </button>
+          <button class="qa-btn" onclick="App.showPage('reward')">
+            <span class="qa-icon">🎁</span>
+            <span class="qa-label">Tukar Poin</span>
+          </button>
+          <button class="qa-btn" onclick="App.showPage('jadwal')">
+            <span class="qa-icon">📅</span>
+            <span class="qa-label">Atur Jadwal</span>
+          </button>
+          <button class="qa-btn" onclick="App.showPage('lokasi')">
+            <span class="qa-icon">📍</span>
+            <span class="qa-label">Lokasi</span>
+          </button>
+        </div>
+        <div class="section">
+          <div class="section-header">
+            <h3>Aktivitas Terbaru</h3>
+            <a href="#" onclick="App.showPage('aktivitas')">Lihat Semua</a>
+          </div>
+          <div id="recent-activity-list" class="activity-list">
+            <div class="empty-state">Belum ada aktivitas</div>
+          </div>
+        </div>
+        <div class="info-card">
+          <div class="info-card-title">💡 Info GreenPoint</div>
+          <p>Setiap 100 gram sampah organik = 5 poin. Setiap 1 kg sampah anorganik = 10 poin. Tukarkan poin Anda dengan berbagai reward menarik!</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: SETOR SAMPAH -->
+    <div id="page-setor" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Setor Sampah</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <form id="setor-form" onsubmit="return false">
+          <div class="form-group">
+            <label>Jenis Sampah</label>
+            <div class="waste-types" id="waste-types">
+              <label class="waste-option selected" data-type="organik" onclick="App.selectWasteType('organik')">
+                <span class="waste-emoji">🌿</span>
+                <span>Organik</span>
+              </label>
+              <label class="waste-option" data-type="anorganik" onclick="App.selectWasteType('anorganik')">
+                <span class="waste-emoji">🧴</span>
+                <span>Anorganik</span>
+              </label>
+            </div>
+          </div>
+          <div class="form-group" id="subkategori-group">
+            <label>Sub-Kategori</label>
+            <select id="setor-subkategori">
+              <option value="">Pilih sub-kategori</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="setor-berat">Berat Sampah</label>
+            <div class="input-group">
+              <input type="number" id="setor-berat" placeholder="0" min="0" step="0.1" oninput="App.hitungEstimasiPoin()">
+              <span class="input-suffix">kg</span>
+            </div>
+            <div class="weight-guide" onclick="document.getElementById('setor-berat').value=0.5; App.hitungEstimasiPoin()">
+              💡 Tips: 1 kantong plastik sedang ≈ 0.5 kg
+            </div>
+          </div>
+          <div class="estimasi-poin" id="estimasi-poin">
+            <span>Estimasi Poin: </span>
+            <span class="poin-nilai" id="estimasi-nilai">0</span>
+            <span> poin</span>
+          </div>
+          <div class="form-group">
+            <label for="setor-foto">Foto Bukti (opsional)</label>
+            <div class="photo-upload" onclick="document.getElementById('setor-foto').click()">
+              <input type="file" id="setor-foto" accept="image/*" capture="environment" style="display:none" onchange="App.previewFoto(event)">
+              <span id="foto-placeholder">📷 Ambil Foto</span>
+              <img id="foto-preview" style="display:none;max-width:100%;border-radius:8px;margin-top:8px">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="setor-catatan">Catatan (opsional)</label>
+            <textarea id="setor-catatan" placeholder="Tambahkan catatan..." rows="2"></textarea>
+          </div>
+          <div id="setor-error" class="form-error" style="display:none"></div>
+          <button type="submit" class="btn btn-primary btn-full" onclick="App.kirimSetoran()">Kirim Setoran</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- PAGE: REWARD / EXCHANGE -->
+    <div id="page-reward" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Tukar Poin</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <div class="points-mini-card">
+          <span>Poin Anda: </span>
+          <strong id="reward-points">0</strong>
+        </div>
+        <div class="filter-chips" id="reward-filters">
+          <button class="chip active" data-filter="all" onclick="App.filterReward('all')">Semua</button>
+          <button class="chip" data-filter="diskon" onclick="App.filterReward('diskon')">Diskon UMKM</button>
+          <button class="chip" data-filter="kebersihan" onclick="App.filterReward('kebersihan')">Kebersihan</button>
+          <button class="chip" data-filter="sertifikat" onclick="App.filterReward('sertifikat')">Sertifikat</button>
+          <button class="chip" data-filter="bisnis" onclick="App.filterReward('bisnis')">Khusus Bisnis</button>
+          <button class="chip" data-filter="emoney" onclick="App.filterReward('emoney')">E-Money</button>
+        </div>
+        <div id="reward-list" class="reward-grid"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: LOKASI TERDEKAT -->
+    <div id="page-lokasi" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Lokasi Terdekat</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <div class="map-placeholder" id="map-placeholder">
+          <div class="map-icon">🗺️</div>
+          <p>Peta lokasi bank sampah</p>
+          <small>Izin lokasi diperlukan untuk menampilkan peta</small>
+          <button class="btn btn-sm btn-primary" onclick="App.initMap()" id="map-activate-btn">Aktifkan Peta</button>
+        </div>
+        <div id="map-container" style="height:250px;border-radius:12px;margin-bottom:16px;display:none"></div>
+        <div class="section-header"><h3>Daftar Bank Sampah</h3></div>
+        <div id="lokasi-list" class="lokasi-list"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: AKTIVITAS / RIWAYAT -->
+    <div id="page-aktivitas" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Riwayat Aktivitas</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <div class="filter-chips" id="aktivitas-filters">
+          <button class="chip active" data-period="all" onclick="App.filterAktivitas('all')">Semua</button>
+          <button class="chip" data-period="today" onclick="App.filterAktivitas('today')">Hari Ini</button>
+          <button class="chip" data-period="week" onclick="App.filterAktivitas('week')">Minggu Ini</button>
+          <button class="chip" data-period="month" onclick="App.filterAktivitas('month')">Bulan Ini</button>
+        </div>
+        <div id="aktivitas-list" class="activity-list"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: ATUR JADWAL -->
+    <div id="page-jadwal" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Atur Jadwal</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <form id="jadwal-form" onsubmit="return false">
+          <div class="form-group">
+            <label for="jadwal-tanggal">Tanggal</label>
+            <input type="date" id="jadwal-tanggal" required>
+          </div>
+          <div class="form-group">
+            <label for="jadwal-jam">Jam</label>
+            <input type="time" id="jadwal-jam" required>
+          </div>
+          <div class="form-group">
+            <label for="jadwal-jenis">Jenis Sampah</label>
+            <select id="jadwal-jenis" required>
+              <option value="organik">Organik</option>
+              <option value="anorganik">Anorganik</option>
+              <option value="campuran">Campuran</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="jadwal-volume">Estimasi Volume/Berat</label>
+            <div class="input-group">
+              <input type="number" id="jadwal-volume" placeholder="0" min="0" step="0.1">
+              <span class="input-suffix">kg</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="jadwal-catatan">Catatan (opsional)</label>
+            <textarea id="jadwal-catatan" placeholder="Misal: sampah di depan rumah" rows="2"></textarea>
+          </div>
+          <div id="jadwal-error" class="form-error" style="display:none"></div>
+          <button type="submit" class="btn btn-primary btn-full" onclick="App.buatJadwal()">Buat Jadwal</button>
+        </form>
+        <div class="section" style="margin-top:24px">
+          <div class="section-header"><h3>Jadwal Saya</h3></div>
+          <div id="jadwal-list" class="activity-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: PROFIL -->
+    <div id="page-profil" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Profil</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <div class="profile-card">
+          <div class="profile-avatar">👤</div>
+          <div class="profile-name" id="profil-nama">-</div>
+          <div class="profile-role" id="profil-role">-</div>
+          <div class="profile-points">Total Poin: <strong id="profil-points">0</strong></div>
+        </div>
+        <div class="profile-menu">
+          <div class="profile-menu-item">
+            <span>📱 Nomor HP</span>
+            <span id="profil-phone">-</span>
+          </div>
+          <div class="profile-menu-item">
+            <span>📍 Alamat</span>
+            <span id="profil-address">-</span>
+          </div>
+          <div class="profile-menu-item">
+            <span>📋 Tipe Akun</span>
+            <span id="profil-type">-</span>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="btn btn-outline btn-full" onclick="App.showEditProfil()">✏️ Edit Profil</button>
+          <button class="btn btn-danger btn-full" onclick="App.logout()">🚪 Keluar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGE: NOTIFIKASI -->
+    <div id="page-notifikasi" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Notifikasi</h2>
+        <div></div>
+      </div>
+      <div class="page-content">
+        <div id="notifikasi-list" class="activity-list"></div>
+      </div>
+    </div>
+
+    <!-- PAGE: ADMIN -->
+    <div id="page-admin" class="page app-page" style="display:none">
+      <div class="page-header">
+        <button class="btn-icon" onclick="App.showPage('home')">←</button>
+        <h2>Panel Admin</h2>
+        <button class="btn-icon" onclick="App.showPage('profil')">👤</button>
+      </div>
+      <div class="page-content">
+        <div class="admin-tabs">
+          <button class="admin-tab active" data-tab="validasi" onclick="App.switchAdminTab('validasi')">✅ Validasi</button>
+          <button class="admin-tab" data-tab="reward" onclick="App.switchAdminTab('reward')">🎁 Reward</button>
+          <button class="admin-tab" data-tab="users" onclick="App.switchAdminTab('users')">👥 Pengguna</button>
+        </div>
+        <div id="admin-validasi" class="admin-tab-content">
+          <div class="section-header"><h3>Antrian Setoran</h3></div>
+          <div id="admin-validasi-list" class="activity-list"></div>
+        </div>
+        <div id="admin-reward" class="admin-tab-content" style="display:none">
+          <div class="section-header">
+            <h3>Kelola Reward</h3>
+            <button class="btn btn-sm btn-primary" onclick="App.tambahReward()">+ Tambah</button>
+          </div>
+          <div id="admin-reward-list"></div>
+        </div>
+        <div id="admin-users" class="admin-tab-content" style="display:none">
+          <div class="section-header"><h3>Daftar Pengguna</h3></div>
+          <div id="admin-users-list"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL -->
+    <div id="modal-overlay" class="modal-overlay" style="display:none" onclick="if(event.target===this)App.tutupModal()">
+      <div class="modal-content" id="modal-content"></div>
+    </div>
+
+    <!-- BOTTOM NAVIGATION -->
+    <nav id="bottom-nav" class="bottom-nav" style="display:none">
+      <button class="nav-item active" data-page="home" onclick="App.showPage('home')">
+        <span class="nav-icon">🏠</span>
+        <span class="nav-label">Beranda</span>
+      </button>
+      <button class="nav-item" data-page="setor" onclick="App.showPage('setor')">
+        <span class="nav-icon">🗑️</span>
+        <span class="nav-label">Setor</span>
+      </button>
+      <button class="nav-item" data-page="reward" onclick="App.showPage('reward')">
+        <span class="nav-icon">🎁</span>
+        <span class="nav-label">Reward</span>
+      </button>
+      <button class="nav-item" data-page="lokasi" onclick="App.showPage('lokasi')">
+        <span class="nav-icon">📍</span>
+        <span class="nav-label">Lokasi</span>
+      </button>
+      <button class="nav-item" data-page="aktivitas" onclick="App.showPage('aktivitas')">
+        <span class="nav-icon">📋</span>
+        <span class="nav-label">Aktivitas</span>
+      </button>
+    </nav>
+
+  </div>
+  <script src="js/app.js"></script>
+</body>
+</html>
