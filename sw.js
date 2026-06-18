@@ -1,18 +1,18 @@
 const CACHE_NAME = 'greenpoint-v1';
 const ASSETS = [
-  '/greenpoint-web/',
-  '/greenpoint-web/index.html',
-  '/greenpoint-web/manifest.json',
-  '/greenpoint-web/css/style.css',
-  '/greenpoint-web/js/app.js',
-  '/greenpoint-web/icons/icon-72x72.png',
-  '/greenpoint-web/icons/icon-96x96.png',
-  '/greenpoint-web/icons/icon-128x128.png',
-  '/greenpoint-web/icons/icon-144x144.png',
-  '/greenpoint-web/icons/icon-152x152.png',
-  '/greenpoint-web/icons/icon-192x192.png',
-  '/greenpoint-web/icons/icon-384x384.png',
-  '/greenpoint-web/icons/icon-512x512.png'
+  '/greenpoint/',
+  '/greenpoint/index.html',
+  '/greenpoint/manifest.json',
+  '/greenpoint/css/style.css',
+  '/greenpoint/js/app.js',
+  '/greenpoint/icons/icon-72x72.png',
+  '/greenpoint/icons/icon-96x96.png',
+  '/greenpoint/icons/icon-128x128.png',
+  '/greenpoint/icons/icon-144x144.png',
+  '/greenpoint/icons/icon-152x152.png',
+  '/greenpoint/icons/icon-192x192.png',
+  '/greenpoint/icons/icon-384x384.png',
+  '/greenpoint/icons/icon-512x512.png'
 ];
 
 self.addEventListener('install', e => {
@@ -40,7 +40,7 @@ self.addEventListener('fetch', e => {
           caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
         }
         return response;
-      }).catch(() => caches.match('/greenpoint-web/index.html'))
+      }).catch(() => caches.match('/greenpoint/index.html'))
     )
   );
 });
