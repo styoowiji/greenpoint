@@ -67,8 +67,8 @@ const App = {
   async seedData() {
     if (this.db.users.length === 0) {
       this.db.users = [
-        { id: 'admin', name: 'Admin GreenPoint', phone: '081234567890', address: 'Desa Ngemplak, Sragen', type: 'admin', password: 'admin123', active: true },
-        { id: 'petugas1', name: 'Petugas Bank Sampah', phone: '081234567891', address: 'Desa Ngemplak, Sragen', type: 'petugas', password: 'petugas123', active: true },
+        { id: 'admin', name: 'Admin GreenPoint', phone: '081234567890', address: 'Perumahan Mustika, Tigaraksa', type: 'admin', password: 'admin123', active: true },
+        { id: 'petugas1', name: 'Petugas Bank Sampah', phone: '081234567891', address: 'Perumahan Mustika, Tigaraksa', type: 'petugas', password: 'petugas123', active: true },
       ];
     }
     if (this.db.rewards.length === 0) {
@@ -470,10 +470,10 @@ const App = {
   renderLokasi() {
     const list = document.getElementById('lokasi-list');
     const lokasi = [
-      { name: 'Bank Sampah Induk Desa Ngemplak', address: 'Jl. Raya Ngemplak No. 1, Sragen', jarak: '0.5 km', jam: '08:00 - 16:00', emoji: '🏪' },
-      { name: 'Drop Point Balai Desa', address: 'Balai Desa Ngemplak, Sragen', jarak: '0.8 km', jam: '07:00 - 17:00', emoji: '🏛️' },
-      { name: 'Bank Sampah Unit Karanganyar', address: 'Jl. Karanganyar RT 03, Sragen', jarak: '1.2 km', jam: '08:00 - 15:00', emoji: '🏪' },
-      { name: 'Drop Point Pasar Ngemplak', address: 'Pasar Tradisional Ngemplak', jarak: '1.5 km', jam: '06:00 - 18:00', emoji: '🏬' },
+      { name: 'Bank Sampah Komunitas Perum Mustika', address: 'Balai Warga, Perum Mustika', jarak: '0.5 km', jam: '08:00 - 16:00', emoji: '🏪' },
+      { name: 'Drop Point Balai Warga', address: 'Balai Warga, Perum Mustika', jarak: '0.3 km', jam: '07:00 - 17:00', emoji: '🏛️' },
+      { name: 'Bank Sampah Komunitas RW/Rt, Perum Mustika', address: 'Balai Warga', jarak: '30 m', jam: '08:00 - 15:00', emoji: '🏪' },
+      { name: 'Drop Point Balai Warga Sesuai Blok', address: 'Jl Mawar', jarak: '0.5 km', jam: '06:00 - 18:00', emoji: '🏬' },
     ];
 
     list.innerHTML = lokasi.map(l => `
